@@ -10,20 +10,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #12151a;
-    --panel: #1a1f26;
-    --panel-2: #20262e;
-    --line: #2a323c;
-    --text: #e9e7df;
-    --text-dim: #8b93a1;
-    --text-faint: #5b6472;
-    --accent: #f2a65a;
-    --v0: #4fd1c5;
-    --v1: #f2a65a;
-    --v2: #e8735c;
-    --v3: #9b8cf2;
-    --v4: #7ec4f2;
-    --v5: #d4e26a;
+    --bg: #f7f6f3;
+    --panel: #ffffff;
+    --panel-2: #f1efe9;
+    --line: #e1ded4;
+    --text: #22262b;
+    --text-dim: #6b7178;
+    --text-faint: #9a9fa6;
+    --accent: #d9822b;
+    --v0: #1f9d90;
+    --v1: #d9822b;
+    --v2: #c14f39;
+    --v3: #7658d6;
+    --v4: #2f7dc4;
+    --v5: #7a8a1e;
     --radius: 10px;
   }
   * { box-sizing: border-box; }
@@ -101,10 +101,10 @@
     align-items: center;
     gap: 6px;
   }
-  .btn:hover { border-color: var(--text-faint); background: #262d36; }
+  .btn:hover { border-color: var(--text-faint); background: #e9e7de; }
   .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-  .btn-primary { background: var(--accent); color: #1a1206; border-color: var(--accent); font-weight: 600; }
-  .btn-primary:hover { background: #f5b673; }
+  .btn-primary { background: var(--accent); color: #ffffff; border-color: var(--accent); font-weight: 600; }
+  .btn-primary:hover { background: #c47324; }
   .btn:disabled { opacity: 0.4; cursor: not-allowed; }
   input[type=file] { display: none; }
 
@@ -159,7 +159,7 @@
     border: 1px solid transparent;
     transition: background 0.12s;
   }
-  .stop-item:hover { background: #262e38; }
+  .stop-item:hover { background: #e9e7de; }
   .stop-item.dragging { opacity: 0.35; }
   .stop-item.drag-over { border-top: 2px solid var(--accent); }
   .stop-order {
@@ -187,13 +187,13 @@
   .empty-state p { margin: 0; font-size: 13px; line-height: 1.6; max-width: 260px; }
 
   /* ---------- Map area ---------- */
-  .map-wrap { position: relative; background: #0d1013; min-width: 0; min-height: 0;}
-  #map { position: absolute; inset: 0; background: #0d1013; }
-  .leaflet-container { background: #0d1013; font-family: 'Inter', sans-serif; }
+  .map-wrap { position: relative; background: #e8e6df; min-width: 0; min-height: 0;}
+  #map { position: absolute; inset: 0; background: #e8e6df; }
+  .leaflet-container { background: #e8e6df; font-family: 'Inter', sans-serif; }
 
   .legend {
     position: absolute; bottom: 16px; left: 16px; z-index: 500;
-    background: rgba(26,31,38,0.92);
+    background: rgba(255,255,255,0.94);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     padding: 10px 14px;
@@ -201,30 +201,31 @@
     display: flex; gap: 14px; flex-wrap: wrap;
     max-width: calc(100% - 32px);
     backdrop-filter: blur(4px);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
   }
   .legend-item { display: flex; align-items: center; gap: 6px; color: var(--text-dim); }
 
   .route-arrow {
     font-size: 13px;
     line-height: 1;
-    text-shadow: 0 0 2px #0d1013, 0 0 2px #0d1013;
+    text-shadow: 0 0 3px #ffffff, 0 0 3px #ffffff, 0 0 3px #ffffff;
     pointer-events: none;
   }
 
   .stop-label {
-    background: rgba(18,21,26,0.82);
-    border: 1px solid var(--line);
+    background: rgba(255,255,255,0.92);
+    border: 1px solid #d8d5cb;
     border-radius: 5px;
     padding: 1px 6px;
     font-family: 'Inter', sans-serif;
     font-size: 11.5px;
-    font-weight: 500;
-    color: var(--text);
+    font-weight: 600;
+    color: #1a1f26;
     white-space: nowrap;
-    box-shadow: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
   }
   .stop-label::before { display: none; }
-  .leaflet-tooltip.stop-label { border: 1px solid var(--line); }
+  .leaflet-tooltip.stop-label { border: 1px solid #d8d5cb; }
 
   .mobile-toggle {
     display: none;
@@ -244,18 +245,19 @@
     align-items: center;
     gap: 8px;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
   }
 
   .hint-badge {
     position: absolute; top: 16px; left: 16px; z-index: 500;
-    background: rgba(26,31,38,0.92);
+    background: rgba(255,255,255,0.94);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     padding: 8px 12px;
     font-size: 11.5px;
     color: var(--text-dim);
     backdrop-filter: blur(4px);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
   }
 </style>
 </head>
@@ -273,6 +275,7 @@
       <button class="btn" id="sampleBtn">テストデータ</button>
       <button class="btn" id="exportCsvBtn" disabled>CSV保存</button>
       <button class="btn" id="exportImgBtn" disabled>画像保存</button>
+      <button class="btn" id="lineStyleBtn">— 実線</button>
     </div>
 
     <div class="stats">
@@ -329,6 +332,7 @@
   let vehicles = [];
   let map = null;
   let layerGroup = null;
+  let lineStyle = 'solid'; // 'solid' | 'dashed'
 
   const el = (id) => document.getElementById(id);
 
@@ -403,11 +407,17 @@
 
   function ensureMap() {
     if (map) return;
-    map = L.map('map', { zoomControl: false, attributionControl: true }).setView([35.68, 139.75], 12);
+    map = L.map('map', {
+      zoomControl: false,
+      attributionControl: true,
+      zoomSnap: 0.25,
+      zoomDelta: 0.5,
+      wheelPxPerZoomLevel: 100
+    }).setView([35.68, 139.75], 12);
     L.control.zoom({ position: 'topright' }).addTo(map);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; OpenStreetMap &copy; CARTO',
-      subdomains: 'abcd',
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      subdomains: 'abc',
       maxZoom: 19,
       crossOrigin: true
     }).addTo(map);
@@ -425,7 +435,13 @@
       if (v.stops.length > 1) latlngs.push([v.stops[0].lat, v.stops[0].lng]); // return leg
 
       if (latlngs.length > 1) {
-        L.polyline(latlngs, { color, weight: 2.5, opacity: 0.85, dashArray: '1 8', lineCap: 'round' }).addTo(layerGroup);
+        L.polyline(latlngs, {
+          color,
+          weight: lineStyle === 'solid' ? 4.5 : 2.5,
+          opacity: 0.9,
+          dashArray: lineStyle === 'dashed' ? '1 8' : null,
+          lineCap: 'round'
+        }).addTo(layerGroup);
         for (let i = 0; i < latlngs.length - 1; i++) {
           const a = { lat: latlngs[i][0], lng: latlngs[i][1] };
           const b = { lat: latlngs[i+1][0], lng: latlngs[i+1][1] };
@@ -448,7 +464,7 @@
         const marker = L.circleMarker([s.lat, s.lng], {
           radius: si === 0 ? 7 : 6,
           fillColor: color,
-          color: '#0d1013',
+          color: '#ffffff',
           weight: 2,
           fillOpacity: 1
         }).addTo(layerGroup);
@@ -620,7 +636,7 @@
 
   function exportImage() {
     const target = document.querySelector('.map-wrap');
-    html2canvas(target, { backgroundColor: '#0d1013', useCORS: true }).then(canvas => {
+    html2canvas(target, { backgroundColor: '#e8e6df', useCORS: true }).then(canvas => {
       canvas.toBlob(blob => downloadBlob(blob, 'route_map_edited.png'));
     }).catch(err => {
       alert('画像の書き出しに失敗しました。地図タイルの読み込み待ちの可能性があります。少し待ってから再度お試しください。');
@@ -647,6 +663,13 @@
   el('sampleBtn').addEventListener('click', () => loadCSVText(SAMPLE_CSV));
   el('exportCsvBtn').addEventListener('click', exportCSV);
   el('exportImgBtn').addEventListener('click', exportImage);
+
+  const lineStyleBtn = el('lineStyleBtn');
+  lineStyleBtn.addEventListener('click', () => {
+    lineStyle = lineStyle === 'solid' ? 'dashed' : 'solid';
+    lineStyleBtn.textContent = lineStyle === 'solid' ? '— 実線' : '┄ 点線';
+    if (vehicles.length) redrawMap();
+  });
 
   const appEl = el('app');
   const mobileToggle = el('mobileToggle');
