@@ -147,6 +147,30 @@
   .vehicle-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; flex: 1; }
   .vehicle-dist { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--text-dim); }
 
+  .vehicle-actions {
+    padding: 0 12px 10px;
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    color: var(--text);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .nav-btn:hover { border-color: var(--text-faint); background: #e9e7de; }
+
   .stop-list { list-style: none; margin: 0; padding: 6px; min-height: 12px; }
   .stop-item {
     display: flex;
@@ -397,6 +421,31 @@
   }
 
   function vehicleColor(i) { return VEHICLE_COLORS[i % VEHICLE_COLORS.length]; }
+
+  // GoogleマップのURLは経由地を最終目的地含め最大9か所までしか指定できないため、
+  // 停留所が多い場合は複数のURL(区間)に分割する
+  function buildNavLegs(stops) {
+    if (stops.length < 2) return [];
+    const maxPerLeg = 10; // 出発地1 + (経由地+目的地)最大9
+    const legs = [];
+    let i = 0;
+    while (i < stops.length - 1) {
+      const legStops = stops.slice(i, Math.min(i + maxPerLeg, stops.length));
+      if (legStops.length < 2) break;
+      legs.push(legStops);
+      i += maxPerLeg - 1; // 最後の地点を次の区間の出発地として重ねる
+    }
+    return legs.map(legStops => {
+      const origin = legStops[0];
+      const destination = legStops[legStops.length - 1];
+      const waypoints = legStops.slice(1, -1);
+      let url = `https://www.google.com/maps/dir/?api=1&origin=${origin.lat},${origin.lng}&destination=${destination.lat},${destination.lng}&travelmode=driving&dir_action=navigate`;
+      if (waypoints.length) {
+        url += `&waypoints=${waypoints.map(w => `${w.lat},${w.lng}`).join('|')}`;
+      }
+      return url;
+    });
+  }
   function vehicleDistance(v) {
     let d = 0;
     for (let i=0;i<v.stops.length-1;i++) d += haversine(v.stops[i], v.stops[i+1]);
@@ -523,6 +572,22 @@
         <span class="vehicle-name">Vehicle ${v.id}</span>
         <span class="vehicle-dist mono">${vehicleDistance(v).toFixed(1)} km</span>`;
       group.appendChild(head);
+
+      const navLegs = buildNavLegs(v.stops);
+      if (navLegs.length) {
+        const actions = document.createElement('div');
+        actions.className = 'vehicle-actions';
+        navLegs.forEach((url, li) => {
+          const a = document.createElement('a');
+          a.href = url;
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.className = 'nav-btn';
+          a.textContent = navLegs.length > 1 ? `🧭 区間${li + 1}のナビ` : '🧭 ナビ開始';
+          actions.appendChild(a);
+        });
+        group.appendChild(actions);
+      }
 
       const list = document.createElement('ul');
       list.className = 'stop-list';
