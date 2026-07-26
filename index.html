@@ -425,21 +425,20 @@
   // GoogleマップのURLは経由地を最終目的地含め最大9か所までしか指定できないため、
   // 停留所が多い場合は複数のURL(区間)に分割する
   function buildNavLegs(stops) {
-    if (stops.length < 2) return [];
-    const maxPerLeg = 10; // 出発地1 + (経由地+目的地)最大9
+    if (!stops.length) return [];
+    const maxPerLeg = 9; // 経由地+目的地の合計が最大9か所まで(出発地=現在地は上限に含まれない)
     const legs = [];
     let i = 0;
-    while (i < stops.length - 1) {
+    while (i < stops.length) {
       const legStops = stops.slice(i, Math.min(i + maxPerLeg, stops.length));
-      if (legStops.length < 2) break;
       legs.push(legStops);
-      i += maxPerLeg - 1; // 最後の地点を次の区間の出発地として重ねる
+      i += maxPerLeg;
     }
     return legs.map(legStops => {
-      const origin = legStops[0];
       const destination = legStops[legStops.length - 1];
-      const waypoints = legStops.slice(1, -1);
-      let url = `https://www.google.com/maps/dir/?api=1&origin=${origin.lat},${origin.lng}&destination=${destination.lat},${destination.lng}&travelmode=driving&dir_action=navigate`;
+      const waypoints = legStops.slice(0, -1);
+      // originを指定しないことで、出発地は常に「現在地」になる
+      let url = `https://www.google.com/maps/dir/?api=1&destination=${destination.lat},${destination.lng}&travelmode=driving&dir_action=navigate`;
       if (waypoints.length) {
         url += `&waypoints=${waypoints.map(w => `${w.lat},${w.lng}`).join('|')}`;
       }
